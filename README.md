@@ -19,11 +19,27 @@ It also includes these dbt packages:
 Install:
 
 - Python 3.10+
-- `dbt-core`
-- `dbt-snowflake`
+
+Recommended: create and activate a local virtual environment in this repository before installing dbt:
 
 ```bash
-pip install dbt-core dbt-snowflake
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+```
+
+On Windows PowerShell:
+
+```powershell
+py -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+```
+
+Then install:
+
+```bash
+python -m pip install dbt-core dbt-snowflake
 ```
 
 Validate:
@@ -132,7 +148,7 @@ dbt_data_quality:
 
 ## 4) Install packages and validate connection
 
-From this repository:
+From this repository, with the virtual environment activated:
 
 ```bash
 dbt deps
