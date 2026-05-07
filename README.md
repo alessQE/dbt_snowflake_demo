@@ -119,7 +119,7 @@ dbt_data_quality:
       role: "DATA_ENGINEER"
       warehouse: "PLATFORM_DEVELOPMENT_WH"
       database: "VALIDATION_DBT_DATA_QUALITY"        # use your real database name
-      schema: "DELAGAA"                              # use your real schema name (no dbt_ prefix)
+      schema: "YOUR_SCHEMA"                          # use your real schema name (no dbt_ prefix)
       threads: 4
       authenticator: externalbrowser
 ```
