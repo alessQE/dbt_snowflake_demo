@@ -104,7 +104,33 @@ dbt_data_quality:
       client_session_keep_alive: false
 ```
 
-> You can also use key-pair auth later, but password auth is the fastest way to get started.
+### 3.1 External browser SSO style (matching your requested format)
+
+If your Snowflake org uses SSO, configure your profile like this:
+
+```yaml
+dbt_data_quality:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "<your_account_locator>"              # example: GMB31674
+      user: "<your_sso_username>"                    # do not put personal emails in shared docs
+      role: "DATA_ENGINEER"
+      warehouse: "PLATFORM_DEVELOPMENT_WH"
+      database: "{{ env_var('DB_NAME_PREFIX', 'Validation_') }}"
+      schema: "dbt_<your_username>"
+      threads: 4
+      authenticator: externalbrowser
+```
+
+Set your environment variable before running dbt:
+
+```bash
+export DB_NAME_PREFIX=Validation_
+```
+
+> Password auth is fastest to get started; `externalbrowser` is recommended when your team uses SSO.
 
 ---
 
