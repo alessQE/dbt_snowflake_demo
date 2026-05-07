@@ -118,16 +118,10 @@ dbt_data_quality:
       user: "<your_sso_username>"                    # do not put personal emails in shared docs
       role: "DATA_ENGINEER"
       warehouse: "PLATFORM_DEVELOPMENT_WH"
-      database: "{{ env_var('DB_NAME_PREFIX', 'Validation_') }}"
-      schema: "dbt_<your_username>"
+      database: "VALIDATION_DBT_DATA_QUALITY"        # use your real database name
+      schema: "DELAGAA"                              # use your real schema name (no dbt_ prefix)
       threads: 4
       authenticator: externalbrowser
-```
-
-Set your environment variable before running dbt:
-
-```bash
-export DB_NAME_PREFIX=Validation_
 ```
 
 > Password auth is fastest to get started; `externalbrowser` is recommended when your team uses SSO.
