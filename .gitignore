@@ -6,3 +6,4 @@ dbt_packages/
 # local profiles and env files
 profiles.yml
 .env
+.venv/
