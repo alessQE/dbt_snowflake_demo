@@ -1,4 +1,4 @@
-# dbt_snowflake_demo
+# dbt_data_quality
 
 A complete starter project named **`dbt_data_quality`** that uses Snowflake sample data and implements a Medallion architecture:
 
@@ -108,6 +108,8 @@ dbt_data_quality:
 
 If your Snowflake org uses SSO, configure your profile like this:
 
+Use a non-sensitive username placeholder in shared docs (for example `<your_sso_username>`), not personal email addresses.
+
 ```yaml
 dbt_data_quality:
   target: dev
@@ -115,7 +117,7 @@ dbt_data_quality:
     dev:
       type: snowflake
       account: "<your_account_locator>"              # example: GMB31674
-      user: "<your_sso_username>"                    # do not put personal emails in shared docs
+      user: "<your_sso_username>"
       role: "DATA_ENGINEER"
       warehouse: "PLATFORM_DEVELOPMENT_WH"
       database: "DBT_DATA_QUALITY"                   # use your real database name
