@@ -118,8 +118,8 @@ dbt_data_quality:
       user: "<your_sso_username>"                    # do not put personal emails in shared docs
       role: "DATA_ENGINEER"
       warehouse: "PLATFORM_DEVELOPMENT_WH"
-      database: "VALIDATION_DBT_DATA_QUALITY"        # use your real database name
-      schema: "YOUR_SCHEMA"                          # use your real schema name (no dbt_ prefix)
+      database: "DBT_DATA_QUALITY"                   # use your real database name
+      schema: "BRONZE"                               # use your real schema name (no dbt_ prefix)
       threads: 4
       authenticator: externalbrowser
 ```
