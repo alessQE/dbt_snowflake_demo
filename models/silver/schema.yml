@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: silver_customers
+    columns:
+      - name: customer_key
+        tests:
+          - not_null
+          - unique
+
+  - name: silver_orders
+    columns:
+      - name: order_key
+        tests:
+          - not_null
+          - unique
+      - name: customer_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('silver_customers')
+              field: customer_key
+      - name: total_price
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              row_condition: "total_price is not null"
+
+  - name: silver_lineitems
+    columns:
+      - name: order_key
+        tests:
+          - not_null
+          - relationships:
+              to: ref('silver_orders')
+              field: order_key
+      - name: quantity
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              row_condition: "quantity is not null"
+
+  - name: silver_parts
+    columns:
+      - name: part_key
+        tests:
+          - not_null
+          - unique

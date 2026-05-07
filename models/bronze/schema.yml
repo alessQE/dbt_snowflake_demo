@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: bronze_customers
+    columns:
+      - name: C_CUSTKEY
+        tests:
+          - not_null
+          - unique
+
+  - name: bronze_orders
+    columns:
+      - name: O_ORDERKEY
+        tests:
+          - not_null
+          - unique
+      - name: O_CUSTKEY
+        tests:
+          - not_null
+
+  - name: bronze_lineitems
+    columns:
+      - name: L_ORDERKEY
+        tests:
+          - not_null
+
+  - name: bronze_parts
+    columns:
+      - name: P_PARTKEY
+        tests:
+          - not_null
+          - unique
