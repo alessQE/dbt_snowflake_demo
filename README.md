@@ -164,7 +164,53 @@ dbt test --select gold
 
 ---
 
-## 6) Project layout
+## 6) Stop everything after you finish (avoid charges)
+
+Your warehouse in this guide is already configured with `auto_suspend = 60`, so it should stop automatically after ~60 seconds of inactivity.
+
+If you want to stop immediately and verify nothing is still running, run:
+
+```sql
+use role accountadmin;
+
+-- force immediate stop
+alter warehouse DBT_WH suspend;
+
+-- verify warehouse state
+show warehouses like 'DBT_WH';
+```
+
+To check for any still-running queries on that warehouse:
+
+```sql
+select
+  query_id,
+  user_name,
+  warehouse_name,
+  execution_status,
+  start_time
+from table(
+  information_schema.query_history(
+    end_time_range_start => dateadd('hour', -1, current_timestamp()),
+    result_limit => 1000
+  )
+)
+where execution_status = 'RUNNING'
+  and warehouse_name = 'DBT_WH'
+order by start_time desc;
+```
+
+If any query is still running, cancel it:
+
+```sql
+select system$cancel_query('<query_id>');
+```
+
+Then re-run `show warehouses like 'DBT_WH';` and confirm `state` is `SUSPENDED`.
+
+---
+
+## 7) Project layout
 
 ```text
 dbt_project.yml
@@ -191,7 +237,7 @@ models/
 
 ---
 
-## 7) Included data quality tooling
+## 8) Included data quality tooling
 
 - **dbt_utils**: reusable dbt macros/helpers
 - **elementary**: observability package (install-ready in `packages.yml`)
