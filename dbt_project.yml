@@ -4,7 +4,7 @@ config-version: 2
 
 profile: dbt_data_quality
 
-model-paths: ["models"]
+model-paths: ["dbt_data_quality/models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
 seed-paths: ["seeds"]

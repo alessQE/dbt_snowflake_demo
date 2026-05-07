@@ -233,24 +233,25 @@ Then re-run `show warehouses like 'DBT_WH';` and confirm `state` is `SUSPENDED`.
 ```text
 dbt_project.yml
 packages.yml
-models/
-  sources/snowflake_sample_sources.yml
-  bronze/
-    bronze_customers.sql
-    bronze_orders.sql
-    bronze_lineitems.sql
-    bronze_parts.sql
-    schema.yml
-  silver/
-    silver_customers.sql
-    silver_orders.sql
-    silver_lineitems.sql
-    silver_parts.sql
-    schema.yml
-  gold/
-    gold_customer_order_summary.sql
-    gold_product_performance.sql
-    schema.yml
+dbt_data_quality/
+  models/
+    sources/snowflake_sample_sources.yml
+    bronze/
+      bronze_customers.sql
+      bronze_orders.sql
+      bronze_lineitems.sql
+      bronze_parts.sql
+      schema.yml
+    silver/
+      silver_customers.sql
+      silver_orders.sql
+      silver_lineitems.sql
+      silver_parts.sql
+      schema.yml
+    gold/
+      gold_customer_order_summary.sql
+      gold_product_performance.sql
+      schema.yml
 ```
 
 ---
