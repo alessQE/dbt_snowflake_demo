@@ -52,7 +52,7 @@ dbt --version
 
 ## 2) Snowflake setup (personal account)
 
-Use your own Snowflake account and create a warehouse/database/schema where dbt can write models.
+Use your own Snowflake account and create a warehouse plus three databases where dbt can write models.
 
 ### 2.1 Find your account identifier
 
@@ -65,6 +65,8 @@ Use this value as `account` in your dbt profile.
 
 ### 2.2 Run this SQL in Snowflake
 
+If you already followed the earlier version of this README and created a single `DBT_DATA_QUALITY` database with `BRONZE`, `SILVER`, and `GOLD` schemas inside it, run [snowflake_cleanup_old_schema_layout.sql](/Users/alessandro.delagarza/Library/CloudStorage/OneDrive-Slalom/Desktop/side_projects/dbt_snowflake_demo/snowflake_cleanup_old_schema_layout.sql) one time before creating the new databases below.
+
 ```sql
 use role accountadmin;
 
@@ -74,24 +76,34 @@ create warehouse if not exists DBT_WH
   auto_resume = true
   initially_suspended = true;
 
-create database if not exists DBT_DATA_QUALITY;
-create schema if not exists DBT_DATA_QUALITY.BRONZE;
-create schema if not exists DBT_DATA_QUALITY.SILVER;
-create schema if not exists DBT_DATA_QUALITY.GOLD;
+create database if not exists BRONZE;
+create database if not exists SILVER;
+create database if not exists GOLD;
 
 create role if not exists DBT_ROLE;
 
 grant usage on warehouse DBT_WH to role DBT_ROLE;
 grant operate on warehouse DBT_WH to role DBT_ROLE;
 
-grant usage on database DBT_DATA_QUALITY to role DBT_ROLE;
-grant usage on all schemas in database DBT_DATA_QUALITY to role DBT_ROLE;
-grant create table, create view on all schemas in database DBT_DATA_QUALITY to role DBT_ROLE;
-grant select on future tables in database DBT_DATA_QUALITY to role DBT_ROLE;
+grant usage on database BRONZE to role DBT_ROLE;
+grant create schema on database BRONZE to role DBT_ROLE;
+grant usage on all schemas in database BRONZE to role DBT_ROLE;
+grant create table, create view on all schemas in database BRONZE to role DBT_ROLE;
+grant select on future tables in database BRONZE to role DBT_ROLE;
 
-grant usage on database SNOWFLAKE_SAMPLE_DATA to role DBT_ROLE;
-grant usage on all schemas in database SNOWFLAKE_SAMPLE_DATA to role DBT_ROLE;
-grant select on all tables in database SNOWFLAKE_SAMPLE_DATA to role DBT_ROLE;
+grant usage on database SILVER to role DBT_ROLE;
+grant create schema on database SILVER to role DBT_ROLE;
+grant usage on all schemas in database SILVER to role DBT_ROLE;
+grant create table, create view on all schemas in database SILVER to role DBT_ROLE;
+grant select on future tables in database SILVER to role DBT_ROLE;
+
+grant usage on database GOLD to role DBT_ROLE;
+grant create schema on database GOLD to role DBT_ROLE;
+grant usage on all schemas in database GOLD to role DBT_ROLE;
+grant create table, create view on all schemas in database GOLD to role DBT_ROLE;
+grant select on future tables in database GOLD to role DBT_ROLE;
+
+grant imported privileges on database SNOWFLAKE_SAMPLE_DATA to role DBT_ROLE;
 
 -- replace YOUR_USER with your Snowflake username
 grant role DBT_ROLE to user YOUR_USER;
@@ -113,9 +125,9 @@ dbt_data_quality:
       user: "<your_username>"
       password: "<your_password>"
       role: "DBT_ROLE"
-      database: "DBT_DATA_QUALITY"
+      database: "BRONZE"
       warehouse: "DBT_WH"
-      schema: "BRONZE"
+      schema: "PUBLIC"
       threads: 4
       client_session_keep_alive: false
 ```
@@ -136,13 +148,19 @@ dbt_data_quality:
       user: "<your_sso_username>"
       role: "DATA_ENGINEER"
       warehouse: "PLATFORM_DEVELOPMENT_WH"
-      database: "DBT_DATA_QUALITY"                   # use your real database name
-      schema: "BRONZE"                               # use your real schema name (no dbt_ prefix)
+      database: "BRONZE"                             # starting database; project config routes each layer to its own database
+      schema: "PUBLIC"                               # shared schema inside each layer database
       threads: 4
       authenticator: externalbrowser
 ```
 
 > Password auth is fastest to get started; `externalbrowser` is recommended when your team uses SSO.
+
+Schema layout used by this project:
+
+- dbt creates model schemas automatically using your profile target schema as a prefix.
+- With `schema: "PUBLIC"` in your profile and model schemas like `customers`, `orders`, and `items`, dbt will create schemas such as `PUBLIC_CUSTOMERS`, `PUBLIC_ORDERS`, and `PUBLIC_ITEMS`.
+- You do not need to pre-create these schemas in Snowflake setup SQL.
 
 ---
 

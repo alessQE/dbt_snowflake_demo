@@ -19,9 +19,29 @@ models:
   dbt_data_quality:
     +materialized: view
     bronze:
-      +schema: bronze
+      +database: BRONZE
+      bronze_customers:
+        +schema: customers
+      bronze_orders:
+        +schema: orders
+      bronze_lineitems:
+        +schema: items
+      bronze_parts:
+        +schema: items
     silver:
-      +schema: silver
+      +database: SILVER
+      silver_customers:
+        +schema: customers
+      silver_orders:
+        +schema: orders
+      silver_lineitems:
+        +schema: items
+      silver_parts:
+        +schema: items
     gold:
       +materialized: table
-      +schema: gold
+      +database: GOLD
+      gold_customer_order_summary:
+        +schema: customers
+      gold_product_performance:
+        +schema: items
