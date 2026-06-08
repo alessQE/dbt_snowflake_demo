@@ -45,3 +45,5 @@ models:
         +schema: customers
       gold_product_performance:
         +schema: items
+      gold_customer_value_behaviour:
+        +schema: customers

@@ -1,0 +1,98 @@
+version: 2
+
+models:
+  - name: gold_customer_value_behaviour
+    description: >
+      Customer 360 analytics mart at one row per customer. This model combines customer profile,
+      order history, and line-item product behavior to show customer value, engagement recency,
+      purchase breadth, and return patterns in one place.
+
+      It is designed to answer questions such as:
+      - Who are the highest-value and most loyal customers?
+      - Which customers are becoming inactive or at risk?
+      - How broad is each customer's product/brand mix?
+      - Are returns or discounts materially affecting customer value?
+
+      The model also includes RFM-style scoring (recency, frequency, monetary) and a derived
+      customer_segment to support targeting, lifecycle analysis, and prioritization in downstream
+      dashboards.
+    columns:
+      - name: customer_key
+        description: Unique customer identifier. One row per customer in this model.
+        data_type: NUMBER(38,0)
+        tests:
+          - not_null
+          - unique
+
+      - name: customer_name
+        description: Customer name from the source profile.
+        data_type: VARCHAR(25)
+
+      - name: market_segment
+        description: Snowflake sample market segment used for customer grouping and analysis.
+        data_type: VARCHAR(10)
+
+      - name: total_orders
+        description: Count of distinct orders placed by the customer.
+        data_type: NUMBER(38,0)
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+
+      - name: total_order_value
+        description: Sum of order header total price across all customer orders.
+        data_type: NUMBER(38,2)
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+      - name: avg_order_value
+        description: Average order value across all customer orders.
+        data_type: NUMBER(38,6)
+
+      - name: days_since_last_order
+        description: Number of days between current_date and the customer last order date.
+        data_type: NUMBER(38,0)
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+
+      - name: return_rate
+        description: Returned lineitems divided by total lineitems for the customer.
+        data_type: NUMBER(38,6)
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              max_value: 1
+
+      - name: r_score
+        description: Recency score from 1 to 5 where higher means more recent activity.
+        data_type: NUMBER(1,0)
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 5
+
+      - name: f_score
+        description: Frequency score from 1 to 5 where higher means more orders.
+        data_type: NUMBER(1,0)
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 5
+
+      - name: m_score
+        description: Monetary score from 1 to 5 where higher means greater total order value.
+        data_type: NUMBER(1,0)
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 1
+              max_value: 5
+
+      - name: customer_segment
+        description: High-level lifecycle/value segment derived from combined RFM score rules.
+        data_type: VARCHAR(50)
+        tests:
+          - not_null

@@ -1,0 +1,31 @@
+version: 2
+
+macros:
+  - name: clean_text
+    description: >
+      Standardizes a varchar column by removing special characters and uppercasing the result.
+
+      Specifically, this macro:
+      - Strips any character that is not alphanumeric, whitespace, or the punctuation marks . ! ?
+      - Replaces those stripped characters with a single space
+      - Uppercases the entire resulting string
+
+      Intended for use in the silver layer to normalize raw text fields before they are consumed
+      by gold models or downstream analytics. Keeps punctuation that carries semantic meaning
+      (periods, exclamation marks, question marks) while eliminating noise such as hyphens,
+      underscores, brackets, and other special characters.
+
+      Example:
+        Input:  "Manufacturer#3"
+        Output: "MANUFACTURER 3"
+
+        Input:  "ECONOMY POLISHED TIN"
+        Output: "ECONOMY POLISHED TIN"
+
+    arguments:
+      - name: column
+        type: string
+        description: >
+          The column reference or expression to clean. Should be passed as a quoted string
+          matching the raw column name (e.g. 'P_NAME') since it is interpolated directly
+          into the SQL regexp_replace expression.
