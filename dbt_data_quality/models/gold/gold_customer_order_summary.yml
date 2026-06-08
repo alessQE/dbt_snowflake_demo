@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: gold_customer_order_summary
+    columns:
+      - name: customer_key
+        data_type: NUMBER(38,0)
+        tests:
+          - not_null
+          - unique
+      - name: customer_name
+        data_type: VARCHAR(25)
+      - name: market_segment
+        data_type: VARCHAR(10)
+      - name: total_orders
+        data_type: NUMBER(38,0)
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+      - name: total_order_value
+        data_type: NUMBER(38,2)
+      - name: first_order_date
+        data_type: DATE
+      - name: last_order_date
+        data_type: DATE

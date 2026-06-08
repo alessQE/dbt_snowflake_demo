@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: bronze_customers
+    columns:
+      - name: C_CUSTKEY
+        data_type: NUMBER(38,0)
+        tests:
+          - not_null
+          - unique
+      - name: C_NAME
+        data_type: VARCHAR(25)
+      - name: C_ADDRESS
+        data_type: VARCHAR(40)
+      - name: C_NATIONKEY
+        data_type: NUMBER(38,0)
+      - name: C_PHONE
+        data_type: VARCHAR(15)
+      - name: C_ACCTBAL
+        data_type: NUMBER(12,2)
+      - name: C_MKTSEGMENT
+        data_type: VARCHAR(10)
+      - name: C_COMMENT
+        data_type: VARCHAR(117)

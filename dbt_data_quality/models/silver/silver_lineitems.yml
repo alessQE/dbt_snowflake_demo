@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: silver_lineitems
+    columns:
+      - name: order_key
+        data_type: NUMBER(38,0)
+        tests:
+          - not_null
+          - relationships:
+              to: ref('silver_orders')
+              field: order_key
+      - name: part_key
+        data_type: NUMBER(38,0)
+      - name: quantity
+        data_type: NUMBER(12,2)
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              row_condition: "quantity is not null"
+      - name: extended_price
+        data_type: NUMBER(12,2)
+      - name: discount
+        data_type: NUMBER(12,2)
+      - name: tax
+        data_type: NUMBER(12,2)
+      - name: return_flag
+        data_type: VARCHAR(1)
+      - name: line_status
+        data_type: VARCHAR(1)
+      - name: ship_date
+        data_type: DATE

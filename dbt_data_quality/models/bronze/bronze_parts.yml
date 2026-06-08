@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: bronze_parts
+    columns:
+      - name: P_PARTKEY
+        data_type: NUMBER(38,0)
+        tests:
+          - not_null
+          - unique
+      - name: P_NAME
+        data_type: VARCHAR(55)
+      - name: P_MFGR
+        data_type: VARCHAR(25)
+      - name: P_BRAND
+        data_type: VARCHAR(10)
+      - name: P_TYPE
+        data_type: VARCHAR(25)
+      - name: P_SIZE
+        data_type: NUMBER(38,0)
+      - name: P_CONTAINER
+        data_type: VARCHAR(10)
+      - name: P_RETAILPRICE
+        data_type: NUMBER(12,2)
+      - name: P_COMMENT
+        data_type: VARCHAR(23)

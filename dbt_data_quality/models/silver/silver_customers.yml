@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: silver_customers
+    columns:
+      - name: customer_key
+        data_type: NUMBER(38,0)
+        tests:
+          - not_null
+          - unique
+      - name: customer_name
+        data_type: VARCHAR(25)
+      - name: nation_key
+        data_type: NUMBER(38,0)
+      - name: phone
+        data_type: VARCHAR(15)
+      - name: account_balance
+        data_type: NUMBER(12,2)
+      - name: market_segment
+        data_type: VARCHAR(10)

@@ -1,24 +1,21 @@
 version: 2
 
 models:
-  - name: gold_customer_order_summary
-    columns:
-      - name: customer_key
-        tests:
-          - not_null
-          - unique
-      - name: total_orders
-        tests:
-          - dbt_expectations.expect_column_values_to_be_between:
-              min_value: 0
-
   - name: gold_product_performance
     columns:
       - name: part_key
+        data_type: NUMBER(38,0)
         tests:
           - not_null
           - unique
+      - name: part_name
+        data_type: VARCHAR(55)
+      - name: brand
+        data_type: VARCHAR(10)
+      - name: total_quantity
+        data_type: NUMBER(38,2)
       - name: net_revenue
+        data_type: NUMBER(38,2)
         tests:
           - dbt_expectations.expect_column_values_to_be_between:
               min_value: 0

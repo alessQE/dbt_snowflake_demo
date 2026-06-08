@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: silver_orders
+    columns:
+      - name: order_key
+        data_type: NUMBER(38,0)
+        tests:
+          - not_null
+          - unique
+      - name: customer_key
+        data_type: NUMBER(38,0)
+        tests:
+          - not_null
+          - relationships:
+              to: ref('silver_customers')
+              field: customer_key
+      - name: order_status
+        data_type: VARCHAR(1)
+      - name: order_date
+        data_type: DATE
+      - name: total_price
+        data_type: NUMBER(12,2)
+        tests:
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: 0
+              row_condition: "total_price is not null"
+      - name: order_priority
+        data_type: VARCHAR(15)
+      - name: ship_priority
+        data_type: NUMBER(38,0)

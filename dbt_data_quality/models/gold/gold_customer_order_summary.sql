@@ -10,3 +10,5 @@ from {{ ref('silver_customers') }} c
 left join {{ ref('silver_orders') }} o
     on c.customer_key = o.customer_key
 group by 1, 2, 3
+having count(distinct o.order_key) > 0
+order by customer_key

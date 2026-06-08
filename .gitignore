@@ -7,3 +7,4 @@ dbt_packages/
 profiles.yml
 .env
 .venv/
+.vscode/

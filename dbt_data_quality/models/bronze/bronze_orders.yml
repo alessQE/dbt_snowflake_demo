@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: bronze_orders
+    columns:
+      - name: O_ORDERKEY
+        data_type: NUMBER(38,0)
+        tests:
+          - not_null
+          - unique
+      - name: O_CUSTKEY
+        data_type: NUMBER(38,0)
+        tests:
+          - not_null
+      - name: O_ORDERSTATUS
+        data_type: VARCHAR(1)
+      - name: O_TOTALPRICE
+        data_type: NUMBER(12,2)
+      - name: O_ORDERDATE
+        data_type: DATE
+      - name: O_ORDERPRIORITY
+        data_type: VARCHAR(15)
+      - name: O_CLERK
+        data_type: VARCHAR(15)
+      - name: O_SHIPPRIORITY
+        data_type: NUMBER(38,0)
+      - name: O_COMMENT
+        data_type: VARCHAR(79)
