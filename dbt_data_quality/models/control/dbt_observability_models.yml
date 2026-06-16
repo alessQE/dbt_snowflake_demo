@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: dbt_observability_models
+    columns:
+      - name: database_name
+        data_type: VARCHAR
+      - name: schema_name
+        data_type: VARCHAR
+      - name: model_name
+        data_type: VARCHAR
+      - name: materialization
+        data_type: VARCHAR
+      - name: status
+        data_type: VARCHAR
+      - name: execution_message
+        data_type: VARCHAR
+      - name: latest_run_datetime
+        data_type: TIMESTAMP_TZ
+      - name: model_compiled_code
+        data_type: VARCHAR

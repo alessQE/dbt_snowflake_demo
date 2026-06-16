@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: refresh_status
+    columns:
+      - name: database_name
+        data_type: VARCHAR
+      - name: schema_name
+        data_type: VARCHAR
+      - name: table_name
+        data_type: VARCHAR
+      - name: current_status
+        data_type: VARCHAR
+      - name: last_refreshed_datetime
+        data_type: TIMESTAMP_TZ

@@ -16,6 +16,9 @@ clean-targets:
   - "dbt_packages"
 
 models:
+  elementary:
+    +schema: dbt_observability
+    +database: SILVER
   dbt_data_quality:
     +materialized: view
     bronze:
@@ -47,3 +50,10 @@ models:
         +schema: items
       gold_customer_value_behaviour:
         +schema: customers
+      refresh_status:
+        +schema: data_health
+        +materialized: view
+    control:
+      +materialized: view
+      +database: GOLD
+      +schema: control
